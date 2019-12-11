@@ -1,0 +1,125 @@
+// SwapDoublyLinkedList.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+
+class DobleLinkLst
+{
+	int data;
+	DobleLinkLst *left;
+	DobleLinkLst *right;
+
+	DobleLinkLst *Head;
+
+public:
+	DobleLinkLst()
+	{
+		Head = nullptr;
+	}
+	void insert(int x)
+	{
+		DobleLinkLst *tmp;
+		tmp = new DobleLinkLst();
+		tmp->data = x;
+		tmp->left = nullptr;
+		tmp->right = nullptr;
+
+		if (Head == nullptr)
+		{
+			Head = tmp;
+		}
+		else
+		{
+			DobleLinkLst *cur;
+			cur = Head;
+			while (cur->right != nullptr)
+				cur = cur->right;
+			cur->right = tmp;
+			tmp->left = cur;
+		}
+	}
+	void Display()
+	{
+		if (Head == nullptr)
+		{
+			std::cout << "List is empty" << std::endl;
+		}
+		else
+		{
+			std::cout << "List Data is : " << std::endl;
+			DobleLinkLst *cur;
+			cur = Head;
+			while (cur != nullptr)
+			{
+				std::cout << cur->data << "\t";
+				cur = cur->right;
+			}
+		}
+	}
+	void Swap()
+	{
+		DobleLinkLst *cur, *prev, *next;
+		if (Head == nullptr)
+		{
+			std::cout << "List is empty" << std::endl;
+		}
+		else
+		{
+			prev = Head;
+			cur = prev->right;
+			next = cur->right;
+
+			while (next != nullptr)
+			{
+				
+				cur->left = prev->left;
+				prev->right = next;
+				prev->left = cur;
+				next->left = prev;				
+				cur->right = prev;	
+				if(cur->left != nullptr)
+					cur->left->right = cur;
+
+				prev = next;
+				cur = prev->right;
+				if (cur != nullptr)
+					next = cur->right;
+				else
+					next = nullptr;
+			} 
+			if (next == nullptr && cur != nullptr)
+			{
+				cur->left = prev->left;
+				prev->right = next;
+				prev->left = cur;
+				cur->right = prev;
+				if (cur->left != nullptr)
+					cur->left->right = cur;
+			}
+
+			while (prev->left != nullptr)
+				prev = prev->left;
+			Head = prev;
+		}
+	}
+};
+
+
+
+int main()
+{
+	DobleLinkLst Dll;
+
+	Dll.insert(1);
+	Dll.insert(2);
+	Dll.insert(3);
+	Dll.insert(4);
+	Dll.insert(5);
+	Dll.insert(6);
+	//Dll.insert(7);
+	Dll.Display();
+	Dll.Swap();
+	Dll.Display();
+    std::cout << "Hello World!\n"; 
+}
